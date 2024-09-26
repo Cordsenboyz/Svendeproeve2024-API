@@ -18,6 +18,12 @@ namespace BooksmartAPI.Repositories
             .Include(product => product.BarCode).ThenInclude(barcode => barcode.Category)
             .FirstOrDefaultAsync(product => product.BarCode.Value == barcode);
 
+        public async Task<IEnumerable<Product>> GetAllWithAllRelations() => await Set
+            .Include(product => product.BarCode).ThenInclude(barcode => barcode.Genres)
+            .Include(product => product.BarCode).ThenInclude(barcode => barcode.Author)
+            .Include(product => product.BarCode).ThenInclude(barcode => barcode.Category)
+            .ToListAsync();
+
         public async Task<IEnumerable<Product>> GetAllByBarcode(string barcode) => await Set
             .Where(product => product.BarCode.Value == barcode)
             .ToListAsync();

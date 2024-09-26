@@ -1,4 +1,5 @@
 using BooksmartAPI.Data;
+using BooksmartAPI.Hubs;
 using BooksmartAPI.Models;
 using BooksmartAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -16,6 +17,10 @@ builder.Services.AddDbContext<BsDbContext>();
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<StoreHub>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
@@ -67,8 +72,8 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters()
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
         ValidIssuer = builder.Configuration["Jwt:ValidIssuer"],
@@ -83,6 +88,15 @@ builder.Services.AddTransient<IJwtTokenService, JwtTokenService>();
 
 var app = builder.Build();
 
+app.MapHub<StoreHub>("/Store");
+
+app.UseCors(builder =>
+    builder
+        .WithOrigins("https://booksmartweb.azurewebsites.net/")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .SetIsOriginAllowed((host) => true)
+);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

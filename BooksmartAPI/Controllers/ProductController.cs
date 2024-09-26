@@ -25,6 +25,7 @@ namespace BooksmartAPI.Controllers
         public async Task<IActionResult> Get(string barcode)
         {
             GetProductDTO getProductDTO = await _productService.GetDTO(barcode);
+            if (getProductDTO is null) return BadRequest();
             return Ok(getProductDTO);
         }
 
@@ -32,7 +33,9 @@ namespace BooksmartAPI.Controllers
         [Route("[action]")]
         public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            IEnumerable<GetAllProductDTO> getAllProductDTO = await _productService.GetAllDTO();
+
+            return Ok(getAllProductDTO);
         }
 
         [HttpPost]

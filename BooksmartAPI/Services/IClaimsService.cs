@@ -24,6 +24,7 @@ namespace BooksmartAPI.Services
             {
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
+                new Claim("name", user.Name)
             };
 
             var userRoles = await _userManager.GetRolesAsync(user);

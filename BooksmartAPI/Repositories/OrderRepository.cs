@@ -13,6 +13,7 @@ namespace BooksmartAPI.Repositories
 
         public async Task<IEnumerable<Order>> GetOrdersByEmail(string email) => await Set
             .Include(order => order.Products)
+            .ThenInclude(product => product.BarCode)
             .Where(order => order.User.Email == email)
             .ToListAsync();
     }

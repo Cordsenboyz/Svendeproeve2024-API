@@ -1,4 +1,5 @@
 ﻿using BooksmartAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BooksmartAPI.DTOs.Product
 {
@@ -12,5 +13,7 @@ namespace BooksmartAPI.DTOs.Product
         public int Pages { get; set; }
         public string BarCode { get; set; }
         public int Count { get; set; }
+        public float Price { get; set; }
+        public float RentPrice { get; set; }
     }
 }

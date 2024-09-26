@@ -4,6 +4,7 @@ using BooksmartAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BooksmartAPI.Migrations
 {
     [DbContext(typeof(BsDbContext))]
-    partial class BsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240908194128_namefieldonuser")]
+    partial class namefieldonuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,12 +77,6 @@ namespace BooksmartAPI.Migrations
 
                     b.Property<int>("Pages")
                         .HasColumnType("int");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.Property<float>("RentPrice")
-                        .HasColumnType("real");
 
                     b.Property<string>("Value")
                         .IsRequired()

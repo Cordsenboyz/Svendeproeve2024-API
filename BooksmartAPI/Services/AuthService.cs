@@ -1,6 +1,7 @@
 ﻿using BooksmartAPI.Data;
 using BooksmartAPI.DTOs.Auth;
 using BooksmartAPI.Models;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -56,6 +57,17 @@ namespace BooksmartAPI.Services
             {
                 Authenticated = false
             };
+        }
+        public async Task<IdentityResult> Register(RegisterDTO registerDTO)
+        {
+            User user = registerDTO.Adapt<User>();
+            user.Name = $"{registerDTO.FirstName} {registerDTO.LastName}";
+            user.UserName = $"{registerDTO.FirstName}{registerDTO.LastName}";
+
+            IdentityResult? result = await _userManager.CreateAsync(user, registerDTO.Password);
+            if (!result.Succeeded) return result;
+
+            return result;
         }
     }
 }
